@@ -1,0 +1,573 @@
+{
+    "name": "StringTemplate",
+    "scopeName": "text.stringtemplate",
+    "fileTypes": [],
+    "patterns": [
+        { "include": "#dollar" }
+        ],
+    "repository": {
+        "dollar": {
+            "patterns": [
+                {
+                    "name": "comment.block.stringtemplate",
+                    "comment": "Comments",
+                    "begin": "\\$!",
+                    "end": "!\\$"
+                    },
+                {
+                    "name": "meta.function.variable.template.stringtemplate",
+                    "comment": "Template and variable calls",
+                    "begin": "\\$(?=[^\\$]+:)",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#dollar-variable-template" }
+                        ],
+                    "end": "\\$",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.keyword.control.stringtemplate",
+                    "comment": "Keyword calls",
+                    "begin": "(\\$)(if|elseif)(\\()(!?)",
+                    "beginCaptures": {
+                        "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
+                        "2": { "name": "keyword.control.if.stringtemplate" },
+                        "3": { "name": "punctuation.definition.control.begin.stringtemplate" },
+                        "4": { "name": "punctuation.definition.logical.not.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#variable" }
+                        ],
+                    "end": "(\\))(\\$)",
+                    "endCaptures": {
+                        "1": { "name": "punctuation.definition.control.end.stringtemplate" },
+                        "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.support.stringtemplate",
+                    "comment": "Function calls",
+                    "begin": "(\\$)(first|last|rest|trunc|strip|length)(\\()",
+                    "beginCaptures": {
+                        "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
+                        "2": { "name": "support.function.stringtemplate" },
+                        "3": { "name": "punctuation.definition.function.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#variable" }
+                        ],
+                    "end": "(\\))(\\$)",
+                    "endCaptures": {
+                        "1": { "name": "punctuation.definition.function.end.stringtemplate" },
+                        "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.template.indirect.stringtemplate",
+                    "comment": "Indirect template calls",
+                    "begin": "\\$(?=\\([^\\$]+\\)\\()",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#indirect-template" }
+                        ],
+                    "end": "\\$",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.template.stringtemplate",
+                    "comment": "Template calls",
+                    "begin": "\\$(?=[^\\$\\.]+\\()",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#template" }
+                        ],
+                    "end": "\\$",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.keyword.control.stringtemplate",
+                    "comment": "Keyword calls",
+                    "match": "(\\$)(else|endif)(\\$)",
+                    "captures": {
+                        "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
+                        "2": { "name": "keyword.control.stringtemplate" },
+                        "3": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.variable.other.options.stringtemplate",
+                    "comment": "Variable with option calls",
+                    "begin": "\\$(?=[^\\$]+;)",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#dollar-variable-options" }
+                        ],
+                    "end": "\\$",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.variable.other.stringtemplate",
+                    "comment": "Variable calls",
+                    "begin": "\\$",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#variable" }
+                        ],
+                    "end": "\\$",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    }
+                ]
+            },
+        "dollar-variable-template": {
+            "patterns": [
+                {
+                    "name": "meta.function.template.indirect.stringtemplate",
+                    "comment": "Variable",
+                    "begin": ":(?=\\()",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#indirect-template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                {
+                    "name": "meta.function.template.stringtemplate",
+                    "comment": "Variable",
+                    "begin": ":",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                { "include": "#variable" }
+                ]
+            },
+        "dollar-variable-options": {
+            "patterns": [
+                {
+                    "name": "meta.punctuation.definition.semicolon.stringtemplate",
+                    "comment": "Variable",
+                    "begin": ";",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.semicolon.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#dollar-options" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                { "include": "#variable" }
+                ]
+            },
+        "dollar-options": {
+            "patterns": [
+                {
+                    "name": "meta.storage.modifier.option.stringtemplate",
+                    "comment": "Anonymous template",
+                    "begin": "(\\s*(separator|format|null|wrap|anchor))(=)",
+                    "beginCaptures": {
+                        "1": { "name" : "storage.modifier.option.stringtemplate" },
+                        "3": { "name" : "punctuation.definition.equal.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#expression" }
+                        ],
+                    "end": ",|(?=\\$)",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.comma.stringtemplate" }
+                        }
+                    }
+                ]
+            },
+        "angle": {
+            "patterns": [
+                {
+                    "name": "comment.block.stringtemplate",
+                    "comment": "Comments",
+                    "begin": "<!",
+                    "end": "!>"
+                    },
+                {
+                    "name": "meta.function.variable.template.stringtemplate",
+                    "comment": "Template and variable calls",
+                    "begin": "<(?=[^>]+:)",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#angle-variable-template" }
+                        ],
+                    "end": ">",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.keyword.control.stringtemplate",
+                    "comment": "Keyword calls",
+                    "begin": "(<)(if|elseif)(\\()(!?)",
+                    "beginCaptures": {
+                        "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
+                        "2": { "name": "keyword.control.if.stringtemplate" },
+                        "3": { "name": "punctuation.definition.control.begin.stringtemplate" },
+                        "4": { "name": "punctuation.definition.logical.not.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#variable" }
+                        ],
+                    "end": "(\\))(>)",
+                    "endCaptures": {
+                        "1": { "name": "punctuation.definition.control.end.stringtemplate" },
+                        "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.support.stringtemplate",
+                    "comment": "Function calls",
+                    "begin": "(<)(first|last|rest|trunc|strip|length)(\\()",
+                    "beginCaptures": {
+                        "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
+                        "2": { "name": "support.function.stringtemplate" },
+                        "3": { "name": "punctuation.definition.function.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#variable" }
+                        ],
+                    "end": "(\\))(>)",
+                    "endCaptures": {
+                        "1": { "name": "punctuation.definition.function.end.stringtemplate" },
+                        "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.template.indirect.stringtemplate",
+                    "comment": "Indirect template calls",
+                    "begin": "<(?=\\([^>]+\\)\\()",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#indirect-template" }
+                        ],
+                    "end": ">",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.template.stringtemplate",
+                    "comment": "Template calls",
+                    "begin": "<(?=[^>\\.]+\\()",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#template" }
+                        ],
+                    "end": ">",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.keyword.control.stringtemplate",
+                    "comment": "Keyword calls",
+                    "match": "(<)(else|endif)(>)",
+                    "captures": {
+                        "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
+                        "2": { "name": "keyword.control.stringtemplate" },
+                        "3": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.variable.other.options.stringtemplate",
+                    "comment": "Variable with option calls",
+                    "begin": "<(?=[^>]+;)",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#angle-variable-options" }
+                        ],
+                    "end": ">",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.variable.other.stringtemplate",
+                    "comment": "Variable calls",
+                    "begin": "<",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#variable" }
+                        ],
+                    "end": ">",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
+                        }
+                    }
+                ]
+            },
+        "angle-variable-template": {
+            "patterns": [
+                {
+                    "name": "meta.function.template.indirect.stringtemplate",
+                    "comment": "Variable",
+                    "begin": ":(?=\\()",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#indirect-template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                {
+                    "name": "meta.function.template.stringtemplate",
+                    "comment": "Variable",
+                    "begin": ":",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                { "include": "#variable" }
+                ]
+            },
+        "angle-variable-options": {
+            "patterns": [
+                {
+                    "name": "meta.punctuation.definition.semicolon.stringtemplate",
+                    "comment": "Variable",
+                    "begin": ";",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.semicolon.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#angle-options" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                { "include": "#variable" }
+                ]
+            },
+        "angle-options": {
+            "patterns": [
+                {
+                    "name": "meta.storage.modifier.option.stringtemplate",
+                    "comment": "Anonymous template",
+                    "begin": "(\\s*(separator|format|null|wrap|anchor))(=)",
+                    "beginCaptures": {
+                        "1": { "name" : "storage.modifier.option.stringtemplate" },
+                        "3": { "name" : "punctuation.definition.equal.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#expression" }
+                        ],
+                    "end": ",|(?=\\$)",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.comma.stringtemplate" }
+                        }
+                    }
+                ]
+            },
+        "argument-list": {
+            "patterns": [
+                { "include": "#comma" },
+                {
+                    "name": "meta.variable.parameter.stringtemplate",
+                    "comment": "Anonymous template",
+                    "match": "([A-Za-z]+)(=)",
+                    "captures": {
+                        "1": { "name" : "variable.parameter.stringtemplate" },
+                        "2": { "name" : "punctuation.definition.equal.stringtemplate" }
+                        }
+                    },
+                { "include": "#expression" }
+                ]
+            },
+        "comma": {
+            "patterns": [
+                {
+                    "name": "punctuation.definition.comma.stringtemplate",
+                    "comment": "Separator",
+                    "match": ","
+                    }
+                ]
+            },
+        "expression": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.stringtemplate",
+                    "comment": "Indirect property lookup",
+                    "begin": "\"",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.string.begin.stringtemplate" }
+                        },
+                    "end": "\"",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.string.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.template.anonymous.stringtemplate",
+                    "comment": "Anonymous template",
+                    "begin": "\\{",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.anonymous.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "text.html.basic" }
+                        ],
+                    "end": "\\}",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.anonymous.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "punctuation.definition.concatenation.stringtemplate",
+                    "comment": "Concatenation operator",
+                    "match": "\\+"
+                    },
+                { "include": "#variable" }
+                ]
+            },
+        "indirect-template": {
+            "patterns": [
+                {
+                    "name": "meta.function.template.indirect.expression.stringtemplate",
+                    "comment": "Template calls",
+                    "begin": "\\(",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.indirect.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#expression" }
+                        ],
+                    "end": "\\)(?=\\()",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.template.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.function.template.indirect.call.stringtemplate",
+                    "comment": "Template calls",
+                    "begin": "\\(",
+                    "beginCaptures": {
+                        "0": { "name": "punctuation.definition.template.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#argument-list" }
+                        ],
+                    "end": "\\)",
+                    "endCaptures": {
+                        "0": { "name": "punctuation.definition.template.end.stringtemplate" }
+                        }
+                    }
+                ]
+            },
+        "list": {
+            "patterns": [
+                { "include": "#comma" },
+                { "include": "#expression" }
+                ]
+            },
+        "template": {
+            "patterns": [
+                {
+                    "name": "meta.function.template.call.stringtemplate",
+                    "comment": "Template calls",
+                    "begin": "([A-Za-z]+(/[A-Za-z]+)*)(\\()",
+                    "beginCaptures": {
+                        "1": { "name": "entity.name.function.template.stringtemplate" },
+                        "3": { "name": "punctuation.definition.template.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#argument-list" }
+                        ],
+                    "end": "(\\))(,?)",
+                    "endCaptures": {
+                        "1": { "name": "punctuation.definition.template.end.stringtemplate" },
+                        "2": { "name": "punctuation.definition.comma.stringtemplate" }
+                        }
+                    }
+                ]
+            },
+        "variable": {
+            "patterns": [
+                {
+                    "name": "meta.variable.other.list.stringtemplate",
+                    "comment": "Indirect property lookup",
+                    "begin": "\\[",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.list.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#list" }
+                        ],
+                    "end": "\\]",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.list.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "meta.variable.other.indirect.stringtemplate",
+                    "comment": "Indirect property lookup",
+                    "begin": "\\(",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.indirect.begin.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#expression" }
+                        ],
+                    "end": "\\)",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.indirect.end.stringtemplate" }
+                        }
+                    },
+                {
+                    "name": "variable.other.stringtemplate",
+                    "comment": "Variable",
+                    "match": "[A-Za-z]+"
+                    },
+                {
+                    "name": "punctuation.definition.dot.stringtemplate",
+                    "comment": "Property operator",
+                    "match": "\\."
+                    }
+                ]
+            }
+        },
+    "uuid": "5a350372-2b96-410f-8f76-370f15c5dbcc"
+    }
