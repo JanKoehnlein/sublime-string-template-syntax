@@ -3,6 +3,11 @@ Sublime StringTemplate Syntax
 
 Sublime syntax definition file for StringTemplate. It was designed for HTML templates and requires modification of the HTML syntax file to be fully functional.
 
+Download
+--------
+
+Download the [Gist](https://gist.github.com/schmalls/5420869/download) for the compiled files.
+
 Dollar vs. Angle Bracket Delimiters
 -----------------------------------
 
