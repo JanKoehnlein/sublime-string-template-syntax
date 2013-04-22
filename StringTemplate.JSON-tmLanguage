@@ -17,14 +17,14 @@
                 {
                     "name": "meta.function.variable.template.stringtemplate",
                     "comment": "Template and variable calls",
-                    "begin": "\\$(?=[^\\$]+:)",
+                    "begin": "\\$\\s*(?=[^\\$]+:)",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#dollar-variable-template" }
                         ],
-                    "end": "\\$",
+                    "end": "\\s*\\$",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -32,7 +32,7 @@
                 {
                     "name": "meta.keyword.control.stringtemplate",
                     "comment": "Keyword calls",
-                    "begin": "(\\$)(if|elseif)(\\()(!?)",
+                    "begin": "(\\$\\s*)(if|elseif)(\\s*\\(\\s*)(!?)",
                     "beginCaptures": {
                         "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
                         "2": { "name": "keyword.control.if.stringtemplate" },
@@ -42,7 +42,7 @@
                     "patterns": [
                         { "include": "#variable" }
                         ],
-                    "end": "(\\))(\\$)",
+                    "end": "(\\s*\\))(\\s*\\$)",
                     "endCaptures": {
                         "1": { "name": "punctuation.definition.control.end.stringtemplate" },
                         "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
@@ -51,7 +51,7 @@
                 {
                     "name": "meta.function.support.stringtemplate",
                     "comment": "Function calls",
-                    "begin": "(\\$)(first|last|rest|trunc|strip|length)(\\()",
+                    "begin": "(\\$\\s*)(first|last|rest|trunc|strip|length)(\\s*\\(\\s*)",
                     "beginCaptures": {
                         "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
                         "2": { "name": "support.function.stringtemplate" },
@@ -60,7 +60,7 @@
                     "patterns": [
                         { "include": "#variable" }
                         ],
-                    "end": "(\\))(\\$)",
+                    "end": "(\\s*\\))(\\s*\\$)",
                     "endCaptures": {
                         "1": { "name": "punctuation.definition.function.end.stringtemplate" },
                         "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
@@ -69,14 +69,14 @@
                 {
                     "name": "meta.function.template.indirect.stringtemplate",
                     "comment": "Indirect template calls",
-                    "begin": "\\$(?=\\([^\\$]+\\)\\()",
+                    "begin": "\\$\\s*(?=\\([^\\$]+\\)\\()",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#indirect-template" }
                         ],
-                    "end": "\\$",
+                    "end": "\\s*\\$",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -84,14 +84,14 @@
                 {
                     "name": "meta.function.template.stringtemplate",
                     "comment": "Template calls",
-                    "begin": "\\$(?=[^\\$\\.]+\\()",
+                    "begin": "\\$\\s*(?=[^\\$\\.]+\\()",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#template" }
                         ],
-                    "end": "\\$",
+                    "end": "\\s*\\$",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -99,7 +99,7 @@
                 {
                     "name": "meta.keyword.control.stringtemplate",
                     "comment": "Keyword calls",
-                    "match": "(\\$)(else|endif)(\\$)",
+                    "match": "(\\$\\s*)(else|endif)(\\s*\\$)",
                     "captures": {
                         "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
                         "2": { "name": "keyword.control.stringtemplate" },
@@ -109,14 +109,14 @@
                 {
                     "name": "meta.variable.other.options.stringtemplate",
                     "comment": "Variable with option calls",
-                    "begin": "\\$(?=[^\\$]+;)",
+                    "begin": "\\$\\s*(?=[^\\$]+;)",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#dollar-variable-options" }
                         ],
-                    "end": "\\$",
+                    "end": "\\s*\\$",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -124,55 +124,46 @@
                 {
                     "name": "meta.variable.other.stringtemplate",
                     "comment": "Variable calls",
-                    "begin": "\\$",
+                    "begin": "\\$\\s*",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#variable" }
                         ],
-                    "end": "\\$",
+                    "end": "\\s*\\$",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
                     }
                 ]
             },
-        "dollar-variable-template": {
+        "dollar-options": {
             "patterns": [
                 {
-                    "name": "meta.function.template.indirect.stringtemplate",
-                    "comment": "Variable",
-                    "begin": ":(?=\\()",
+                    "name": "meta.storage.modifier.option.stringtemplate",
+                    "comment": "Variable option",
+                    "begin": "(separator|format|null|wrap|anchor)(\\s*=\\s*)",
                     "beginCaptures": {
-                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        "1": { "name" : "storage.modifier.option.stringtemplate" },
+                        "2": { "name" : "punctuation.definition.equal.stringtemplate" }
                         },
                     "patterns": [
-                        { "include": "#indirect-template" }
+                        { "include": "#expression" }
                         ],
-                    "end": "(?=\\$)"
-                    },
-                {
-                    "name": "meta.function.template.stringtemplate",
-                    "comment": "Variable",
-                    "begin": ":",
-                    "beginCaptures": {
-                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
-                        },
-                    "patterns": [
-                        { "include": "#template" }
-                        ],
-                    "end": "(?=\\$)"
-                    },
-                { "include": "#variable" }
+                    "end": "\\s*,\\s*|(?=\\$)",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.comma.stringtemplate" }
+                        }
+                    }
                 ]
             },
         "dollar-variable-options": {
             "patterns": [
                 {
                     "name": "meta.punctuation.definition.semicolon.stringtemplate",
-                    "comment": "Variable",
-                    "begin": ";",
+                    "comment": "Variable options",
+                    "begin": ";\\s*",
                     "beginCaptures": {
                         "0": { "name" : "punctuation.definition.semicolon.stringtemplate" }
                         },
@@ -184,24 +175,53 @@
                 { "include": "#variable" }
                 ]
             },
-        "dollar-options": {
+        "dollar-variable-template": {
             "patterns": [
                 {
-                    "name": "meta.storage.modifier.option.stringtemplate",
-                    "comment": "Anonymous template",
-                    "begin": "(\\s*(separator|format|null|wrap|anchor))(=)",
+                    "name": "meta.function.template.anonymous.stringtemplate",
+                    "comment": "Indirect template with parameters",
+                    "begin": "(:\\s*)(\\{\\s*)((([A-Za-z]\\w*)(\\s*,?\\s*))+(\\|))?",
                     "beginCaptures": {
-                        "1": { "name" : "storage.modifier.option.stringtemplate" },
-                        "3": { "name" : "punctuation.definition.equal.stringtemplate" }
+                        "1": { "name" : "punctuation.definition.template.call.stringtemplate" },
+                        "2": { "name" : "punctuation.definition.anonymous.begin.stringtemplate" },
+                        "5": { "name" : "variable.parameter.template.anonymous.stringtemplate" },
+                        "6": { "name" : "punctuation.definition.comma.stringtemplate" },
+                        "7": { "name" : "punctuation.definition.pipe.stringtemplate" }
                         },
                     "patterns": [
-                        { "include": "#expression" }
+                        { "include": "#expression-internal" }
                         ],
-                    "end": ",|(?=\\$)",
+                    "end": "(\\}\\s*)(,?)",
                     "endCaptures": {
-                        "0": { "name" : "punctuation.definition.comma.stringtemplate" }
+                        "1": { "name" : "punctuation.definition.anonymous.end.stringtemplate" },
+                        "2": { "name" : "punctuation.definition.comma.stringtemplate" }
                         }
-                    }
+                    },
+                {
+                    "name": "meta.function.template.indirect.stringtemplate",
+                    "comment": "Indirect template",
+                    "begin": ":\\s*(?=\\()",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#indirect-template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                {
+                    "name": "meta.function.template.stringtemplate",
+                    "comment": "Template",
+                    "begin": ":",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                { "include": "#variable" }
                 ]
             },
         "angle": {
@@ -230,7 +250,7 @@
                 {
                     "name": "meta.keyword.control.stringtemplate",
                     "comment": "Keyword calls",
-                    "begin": "(<)(if|elseif)(\\()(!?)",
+                    "begin": "(<\\s*)(if|elseif)(\\s*\\(\\s*)(!?)",
                     "beginCaptures": {
                         "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
                         "2": { "name": "keyword.control.if.stringtemplate" },
@@ -240,7 +260,7 @@
                     "patterns": [
                         { "include": "#variable" }
                         ],
-                    "end": "(\\))(>)",
+                    "end": "(\\s*\\))(\\s*>)",
                     "endCaptures": {
                         "1": { "name": "punctuation.definition.control.end.stringtemplate" },
                         "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
@@ -249,7 +269,7 @@
                 {
                     "name": "meta.function.support.stringtemplate",
                     "comment": "Function calls",
-                    "begin": "(<)(first|last|rest|trunc|strip|length)(\\()",
+                    "begin": "(<\\s*)(first|last|rest|trunc|strip|length)(\\s*\\(\\s*)",
                     "beginCaptures": {
                         "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
                         "2": { "name": "support.function.stringtemplate" },
@@ -258,7 +278,7 @@
                     "patterns": [
                         { "include": "#variable" }
                         ],
-                    "end": "(\\))(>)",
+                    "end": "(\\s*\\))(\\s*>)",
                     "endCaptures": {
                         "1": { "name": "punctuation.definition.function.end.stringtemplate" },
                         "2": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
@@ -267,14 +287,14 @@
                 {
                     "name": "meta.function.template.indirect.stringtemplate",
                     "comment": "Indirect template calls",
-                    "begin": "<(?=\\([^>]+\\)\\()",
+                    "begin": "<\\s*(?=\\([^>]+\\)\\()",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#indirect-template" }
                         ],
-                    "end": ">",
+                    "end": "\\s*>",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -282,14 +302,14 @@
                 {
                     "name": "meta.function.template.stringtemplate",
                     "comment": "Template calls",
-                    "begin": "<(?=[^>\\.]+\\()",
+                    "begin": "<\\s*(?=[^>\\.]+\\()",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#template" }
                         ],
-                    "end": ">",
+                    "end": "\\s*>",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -297,7 +317,7 @@
                 {
                     "name": "meta.keyword.control.stringtemplate",
                     "comment": "Keyword calls",
-                    "match": "(<)(else|endif)(>)",
+                    "match": "(<\\s*)(else|endif)(\\s*>)",
                     "captures": {
                         "1": { "name": "punctuation.definition.delimiter.begin.stringtemplate" },
                         "2": { "name": "keyword.control.stringtemplate" },
@@ -307,14 +327,14 @@
                 {
                     "name": "meta.variable.other.options.stringtemplate",
                     "comment": "Variable with option calls",
-                    "begin": "<(?=[^>]+;)",
+                    "begin": "<\\s*(?=[^>]+;)",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#angle-variable-options" }
                         ],
-                    "end": ">",
+                    "end": "\\s*>",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
@@ -322,55 +342,46 @@
                 {
                     "name": "meta.variable.other.stringtemplate",
                     "comment": "Variable calls",
-                    "begin": "<",
+                    "begin": "<\\s*",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#variable" }
                         ],
-                    "end": ">",
+                    "end": "\\s*>",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.delimiter.end.stringtemplate" }
                         }
                     }
                 ]
             },
-        "angle-variable-template": {
+        "angle-options": {
             "patterns": [
                 {
-                    "name": "meta.function.template.indirect.stringtemplate",
-                    "comment": "Variable",
-                    "begin": ":(?=\\()",
+                    "name": "meta.storage.modifier.option.stringtemplate",
+                    "comment": "Anonymous template",
+                    "begin": "(\\s*(separator|format|null|wrap|anchor))(\\s*=\\s*)",
                     "beginCaptures": {
-                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        "1": { "name" : "storage.modifier.option.stringtemplate" },
+                        "3": { "name" : "punctuation.definition.equal.stringtemplate" }
                         },
                     "patterns": [
-                        { "include": "#indirect-template" }
+                        { "include": "#expression" }
                         ],
-                    "end": "(?=\\$)"
-                    },
-                {
-                    "name": "meta.function.template.stringtemplate",
-                    "comment": "Variable",
-                    "begin": ":",
-                    "beginCaptures": {
-                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
-                        },
-                    "patterns": [
-                        { "include": "#template" }
-                        ],
-                    "end": "(?=\\$)"
-                    },
-                { "include": "#variable" }
+                    "end": "\\s*,|(?=\\$)",
+                    "endCaptures": {
+                        "0": { "name" : "punctuation.definition.comma.stringtemplate" }
+                        }
+                    }
                 ]
             },
         "angle-variable-options": {
             "patterns": [
                 {
                     "name": "meta.punctuation.definition.semicolon.stringtemplate",
-                    "comment": "Variable",
-                    "begin": ";",
+                    "comment": "Variable options",
+                    "begin": "\\s*;\\s*",
                     "beginCaptures": {
                         "0": { "name" : "punctuation.definition.semicolon.stringtemplate" }
                         },
@@ -382,24 +393,33 @@
                 { "include": "#variable" }
                 ]
             },
-        "angle-options": {
+        "angle-variable-template": {
             "patterns": [
                 {
-                    "name": "meta.storage.modifier.option.stringtemplate",
-                    "comment": "Anonymous template",
-                    "begin": "(\\s*(separator|format|null|wrap|anchor))(=)",
+                    "name": "meta.function.template.indirect.stringtemplate",
+                    "comment": "Indirect template call",
+                    "begin": "\\s*:\\s*(?=\\()",
                     "beginCaptures": {
-                        "1": { "name" : "storage.modifier.option.stringtemplate" },
-                        "3": { "name" : "punctuation.definition.equal.stringtemplate" }
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
                         },
                     "patterns": [
-                        { "include": "#expression" }
+                        { "include": "#indirect-template" }
                         ],
-                    "end": ",|(?=\\$)",
-                    "endCaptures": {
-                        "0": { "name" : "punctuation.definition.comma.stringtemplate" }
-                        }
-                    }
+                    "end": "(?=\\$)"
+                    },
+                {
+                    "name": "meta.function.template.stringtemplate",
+                    "comment": "Template call",
+                    "begin": "\\s*:\\s*",
+                    "beginCaptures": {
+                        "0": { "name" : "punctuation.definition.template.call.stringtemplate" }
+                        },
+                    "patterns": [
+                        { "include": "#template" }
+                        ],
+                    "end": "(?=\\$)"
+                    },
+                { "include": "#variable" }
                 ]
             },
         "argument-list": {
@@ -407,8 +427,8 @@
                 { "include": "#comma" },
                 {
                     "name": "meta.variable.parameter.stringtemplate",
-                    "comment": "Anonymous template",
-                    "match": "([A-Za-z]+)(=)",
+                    "comment": "Argument",
+                    "match": "([A-Za-z]\\w*)(\\s*=\\s*)",
                     "captures": {
                         "1": { "name" : "variable.parameter.stringtemplate" },
                         "2": { "name" : "punctuation.definition.equal.stringtemplate" }
@@ -422,7 +442,7 @@
                 {
                     "name": "punctuation.definition.comma.stringtemplate",
                     "comment": "Separator",
-                    "match": ","
+                    "match": "\\s*,\\s*"
                     }
                 ]
             },
@@ -430,7 +450,7 @@
             "patterns": [
                 {
                     "name": "string.quoted.double.stringtemplate",
-                    "comment": "Indirect property lookup",
+                    "comment": "Quoted string",
                     "begin": "\"",
                     "beginCaptures": {
                         "0": { "name" : "punctuation.definition.string.begin.stringtemplate" }
@@ -448,7 +468,7 @@
                         "0": { "name" : "punctuation.definition.anonymous.begin.stringtemplate" }
                         },
                     "patterns": [
-                        { "include": "text.html.basic" }
+                        { "include": "#expression-internal" }
                         ],
                     "end": "\\}",
                     "endCaptures": {
@@ -458,24 +478,29 @@
                 {
                     "name": "punctuation.definition.concatenation.stringtemplate",
                     "comment": "Concatenation operator",
-                    "match": "\\+"
+                    "match": "\\s*\\+\\s*"
                     },
                 { "include": "#variable" }
+                ]
+            },
+        "expression-internal": {
+            "patterns": [
+                { "include": "text.html.basic" }
                 ]
             },
         "indirect-template": {
             "patterns": [
                 {
                     "name": "meta.function.template.indirect.expression.stringtemplate",
-                    "comment": "Template calls",
-                    "begin": "\\(",
+                    "comment": "Indirect template calls",
+                    "begin": "\\(\\s*",
                     "beginCaptures": {
                         "0": { "name": "punctuation.definition.indirect.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#expression" }
                         ],
-                    "end": "\\)(?=\\()",
+                    "end": "\\s*\\)\\s*(?=\\()",
                     "endCaptures": {
                         "0": { "name": "punctuation.definition.template.end.stringtemplate" }
                         }
@@ -508,7 +533,7 @@
                 {
                     "name": "meta.function.template.call.stringtemplate",
                     "comment": "Template calls",
-                    "begin": "([A-Za-z]+(/[A-Za-z]+)*)(\\()",
+                    "begin": "([A-Za-z]\\w*(/[A-Za-z]\\w*)*)(\\(\\s*)",
                     "beginCaptures": {
                         "1": { "name": "entity.name.function.template.stringtemplate" },
                         "3": { "name": "punctuation.definition.template.begin.stringtemplate" }
@@ -516,7 +541,7 @@
                     "patterns": [
                         { "include": "#argument-list" }
                         ],
-                    "end": "(\\))(,?)",
+                    "end": "(\\))(\\s*,?)",
                     "endCaptures": {
                         "1": { "name": "punctuation.definition.template.end.stringtemplate" },
                         "2": { "name": "punctuation.definition.comma.stringtemplate" }
@@ -528,15 +553,15 @@
             "patterns": [
                 {
                     "name": "meta.variable.other.list.stringtemplate",
-                    "comment": "Indirect property lookup",
-                    "begin": "\\[",
+                    "comment": "List creation",
+                    "begin": "\\[\\s*",
                     "beginCaptures": {
                         "0": { "name" : "punctuation.definition.list.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#list" }
                         ],
-                    "end": "\\]",
+                    "end": "\\s*\\]",
                     "endCaptures": {
                         "0": { "name" : "punctuation.definition.list.end.stringtemplate" }
                         }
@@ -544,14 +569,14 @@
                 {
                     "name": "meta.variable.other.indirect.stringtemplate",
                     "comment": "Indirect property lookup",
-                    "begin": "\\(",
+                    "begin": "\\(\\s*",
                     "beginCaptures": {
                         "0": { "name" : "punctuation.definition.indirect.begin.stringtemplate" }
                         },
                     "patterns": [
                         { "include": "#expression" }
                         ],
-                    "end": "\\)",
+                    "end": "\\s*\\)",
                     "endCaptures": {
                         "0": { "name" : "punctuation.definition.indirect.end.stringtemplate" }
                         }
@@ -559,7 +584,7 @@
                 {
                     "name": "variable.other.stringtemplate",
                     "comment": "Variable",
-                    "match": "[A-Za-z]+"
+                    "match": "[\\p{Lu}\\p{Ll}\\p{Lt}\\p{Lm}\\p{Lo}\\p{Nl}_][\\p{Lu}\\p{Ll}\\p{Lt}\\p{Lm}\\p{Lo}\\p{Nl}\\p{Nd}\\p{Pc}\\p{Mn}\\p{Mc}\\p{Cf}]*"
                     },
                 {
                     "name": "punctuation.definition.dot.stringtemplate",
